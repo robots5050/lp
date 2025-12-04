@@ -26,7 +26,7 @@
 <meta property="og:title" content="RUPIAHBET - Aliansi Agen Resmi Situs Slot Gacor Terbaik Dan Ternyaman Versi Mobile" />
 <meta property="og:description" content="RUPIAHBET merupakan agen resmi sebuah situs slot gacor terbaik dengan memiliki fitur mobile yang sangat responsif dan anti lemot." />
 <meta property="og:url" content="https://slotrupiahbet.online/" />
-<link rel="amphtml" href="https://RUPIAHBET-1.pages.dev/" />
+<link rel="amphtml" href="https://yourprojectanduploadyour.pages.dev/" />
 <meta property="og:site_name" content="RUPIAHBET" />
 <meta property="og:image" content="https://imgku.vip/images/sEryc.png"/>
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
@@ -945,8 +945,8 @@ padding: 30px 0;
                     </li>
                 </ul>
         <div class="eeat-buttons">
-                <a href="https://RUPIAHBET-1.pages.dev/">Daftar</a>
-                <a href="https://RUPIAHBET-1.pages.dev/">Login</a>
+                <a href="https://yourprojectanduploadyour.pages.dev/">Daftar</a>
+                <a href="https://yourprojectanduploadyour.pages.dev/">Login</a>
             </div>
         </div>
     </nav>
@@ -960,7 +960,7 @@ padding: 30px 0;
                         <img src="https://imgku.vip/images/sEryc.png" class="img-fluid" alt="RUPIAHBET">
                     </div>
                     <div class="banner_gif mt-3 text-center">
-                        <a rel="nofollow noopener" href="https://RUPIAHBET-1.pages.dev/">
+                        <a rel="nofollow noopener" href="https://yourprojectanduploadyour.pages.dev/">
                             <img src="https://imgku.vip/images/sd01S.gif" width="100%" height="auto" alt="Daftar Sekarang">
                         </a>
                     </div>
